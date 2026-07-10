@@ -1,0 +1,41 @@
+<p>users works!</p>
+<div class="container -mt-5">
+  <button class="btn btn-success" (click)="users.reload()">Reload</button>
+  <table class="table">
+    <tr>
+      <th>S.No</th>
+      <th>Name</th>
+      <th>Enmail</th>
+    </tr>
+    <tBody>
+      <tr>
+        <!-- tosignal -->
+        <!-- @for(user of users(); track user.id){
+        <td>{{user.id}}</td>
+        <td>{{user.fullname}}</td>
+        <td>{{user.email}}</td>
+        }
+        @empty{
+          <td>Not Data Found</td>
+        } -->
+
+        @if(users.isLoading()){
+          <p>Loading...</p>
+
+        }
+         @else if(users.error()){
+          <p>Something went wrong</p>
+         }@else{
+            @for(user of users.value(); track user.id){
+              <td>{{user.fullname}}</td>
+            }
+         }
+
+
+      </tr>
+
+    </tBody>
+
+  </table>
+
+  </div>

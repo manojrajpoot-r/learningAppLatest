@@ -1,0 +1,38 @@
+.btn-success{
+  background:green;
+  color:white;
+  padding:10px;
+  cursor:pointer;
+}
+
+.btn-danger{
+  background:red;
+  color:white;
+  padding:10px;
+  cursor:pointer;
+
+}
+
+.light {
+  background: white;
+  color: black;
+  min-height: 100vh;
+}
+
+.dark {
+  background: #77d405;
+  color: white;
+  min-height: 100vh;
+}
+
+.active{
+  background-color: #77d405;
+  color:white;
+  padding:100vh;
+}
+
+.inactive{
+  background-color: rgb(235, 12, 12);
+  color:white;
+  padding:100vh;
+}
