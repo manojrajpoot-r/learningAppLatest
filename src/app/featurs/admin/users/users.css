@@ -1,0 +1,11 @@
+.modal{
+  display:block;
+  backdrop-filter: blur(2px);
+
+}
+.pagination{
+  display:flex;
+  align-items: center;
+  /* flex-direction: column; */
+  gap:20px;
+}

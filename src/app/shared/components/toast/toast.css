@@ -1,0 +1,165 @@
+.toast-container{
+
+    position:fixed;
+
+    top:20px;
+
+    right:20px;
+
+    width:340px;
+
+    z-index:9999;
+
+}
+
+.toast-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    background:white;
+
+    margin-bottom:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+    overflow:hidden;
+
+    animation:slideIn .35s ease;
+
+    position:relative;
+
+}
+
+.icon{
+
+    font-size:24px;
+
+}
+
+.message{
+
+    font-weight:500;
+
+}
+
+.close{
+
+    border:none;
+
+    background:none;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.success{
+
+    border-left:5px solid #28a745;
+
+}
+
+.error{
+
+    border-left:5px solid #dc3545;
+
+}
+
+.warning{
+
+    border-left:5px solid orange;
+
+}
+
+.info{
+
+    border-left:5px solid #0dcaf0;
+
+}
+
+.progress{
+
+    position:absolute;
+
+    left:0;
+
+    bottom:0;
+
+    height:4px;
+
+    width:100%;
+
+    background:#28a745;
+
+    animation:progress 3s linear forwards;
+
+}
+
+.success .progress{
+
+    background:#28a745;
+
+}
+
+.error .progress{
+
+    background:#dc3545;
+
+}
+
+.warning .progress{
+
+    background:orange;
+
+}
+
+.info .progress{
+
+    background:#0dcaf0;
+
+}
+
+@keyframes progress{
+
+    from{
+
+        width:100%;
+
+    }
+
+    to{
+
+        width:0;
+
+    }
+
+}
+
+@keyframes slideIn{
+
+    from{
+
+        transform:translateX(120%);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:translateX(0);
+
+        opacity:1;
+
+    }
+
+}

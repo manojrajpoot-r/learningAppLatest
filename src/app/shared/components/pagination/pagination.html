@@ -1,0 +1,59 @@
+<nav>
+
+    <ul class="pagination justify-content-center">
+
+        <!-- Previous -->
+
+        <li
+            class="page-item"
+            [class.disabled]="pageNumber() === 1">
+
+            <button
+                class="page-link"
+                (click)="changePage(pageNumber() - 1)">
+
+                Previous
+
+            </button>
+
+        </li>
+
+        <!-- Page Numbers -->
+
+        @for(page of pages(); track page){
+
+            <li
+                class="page-item"
+                [class.active]="pageNumber() === page">
+
+                <button
+                    class="page-link"
+                    (click)="changePage(page)">
+
+                    {{page}}
+
+                </button>
+
+            </li>
+
+        }
+
+        <!-- Next -->
+
+        <li
+            class="page-item"
+            [class.disabled]="pageNumber() === totalPages()">
+
+            <button
+                class="page-link"
+                (click)="changePage(pageNumber() + 1)">
+
+                Next
+
+            </button>
+
+        </li>
+
+    </ul>
+
+</nav>

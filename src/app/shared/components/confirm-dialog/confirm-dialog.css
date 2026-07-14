@@ -1,0 +1,14 @@
+.modal{
+  backdrop-filter: blur(2px);
+  z-index:9999;
+}
+.modal-content{
+  border-radius: 12px;
+}
+
+.modal-header{
+   border-bottom: 1px solid #dee2e6;
+}
+.modal-footer{
+  border-top: 1px solid #dee2e6;
+}

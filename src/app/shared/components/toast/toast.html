@@ -1,0 +1,51 @@
+<div class="toast-container">
+
+@for(item of toast.toasts(); track item.id){
+
+<div class="toast-card" [class]="item.type">
+
+    <div class="icon">
+
+        @switch(item.type){
+
+            @case('success'){
+                ✔
+            }
+
+            @case('error'){
+                ✖
+            }
+
+            @case('warning'){
+                ⚠
+            }
+
+            @case('info'){
+                ℹ
+            }
+
+        }
+
+    </div>
+
+    <div class="content">
+
+        <div class="message">
+            {{item.message}}
+        </div>
+
+        <div class="progress"></div>
+
+    </div>
+
+    <button
+        class="close"
+        (click)="toast.remove(item.id)">
+        ×
+    </button>
+
+</div>
+
+}
+
+</div>

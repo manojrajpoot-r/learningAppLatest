@@ -1,0 +1,7 @@
+.paginate{
+  margin-top: 20px;
+}
+
+.page-item{
+  cursor:pointer;
+}

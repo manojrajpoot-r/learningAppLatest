@@ -1,5 +1,9 @@
 export interface ApiResponse<T> {
   success: boolean;
-  message: string;
+  message: string | null;
   data: T;
+
+  totalRecords: number;
+  pageNumber: number;
+  pageSize: number;
 }
