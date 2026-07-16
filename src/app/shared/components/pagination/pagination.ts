@@ -21,10 +21,11 @@ export class Pagination {
 
 
 
-  changePage(page: number) {
+  pageChange(page: number) {
     if (page < 1 || page > this.totalPages()) {
       return;
     }
+
     this.pageChanged.emit(page);
   }
 }

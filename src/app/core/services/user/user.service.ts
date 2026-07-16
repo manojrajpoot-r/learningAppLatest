@@ -5,7 +5,7 @@ import { User } from '../../models/user/user.model';
 import { PaginationRequest } from '../../models/pagination-request/pagination-request';
 import { CreateUserRequest } from '../../models/user/CreateUserRequest.model';
 import { UpdateUserRequest } from '../../models/user/UpdateUserRequest.model';
-
+import { HttpParams } from '@angular/common/http';
 @Service()
 export class UserService extends BaseApiService {
 
@@ -15,6 +15,29 @@ export class UserService extends BaseApiService {
       request
     );
   }
+
+
+  // getUsers(request: PaginationRequest) {
+
+  //   let params = new HttpParams()
+  //     .set('pageNumber', request.pageNumber)
+  //     .set('pageSize', request.pageSize)
+  //     .set('search', request.search ?? '');
+
+  //   if (request.sortBy) {
+  //     params = params.set('sortBy', request.sortBy);
+  //   }
+
+  //   if (request.sortOrder) {
+  //     params = params.set('sortOrder', request.sortOrder);
+  //   }
+
+  //   return this.http.get<ApiResponse<User[]>>(
+  //     this.apiUrl + '/Users',
+  //     { params }
+  //   );
+
+  // }
 
   createUser(request: CreateUserRequest) {
     return this.http.post<ApiResponse<User>>(`${this.apiUrl}/User`, request);
@@ -28,7 +51,12 @@ export class UserService extends BaseApiService {
     return this.http.put<ApiResponse<User>>(`${this.apiUrl}/User/${id}`, request)
 
   }
-
+  toggleStatus(id: number) {
+    return this.http.patch<ApiResponse<boolean>>(
+      `${this.apiUrl}/User/status/${id}`,
+      {}
+    );
+  }
   deleteUser(id: number) {
     return this.http.delete<ApiResponse<User>>(`${this.apiUrl}/User/${id}`);
 

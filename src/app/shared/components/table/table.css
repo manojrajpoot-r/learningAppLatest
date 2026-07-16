@@ -1,0 +1,11 @@
+.table{
+  margin-top: 20px;
+}
+.table th{
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.table td{
+  vertical-align: middle;
+}

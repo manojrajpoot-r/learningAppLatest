@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ToastService } from '../../../core/services/toast/toast.service';
+import { ToastService } from '../../services/toast/toast.service';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-toast',

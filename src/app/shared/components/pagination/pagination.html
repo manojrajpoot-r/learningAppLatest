@@ -10,7 +10,7 @@
 
             <button
                 class="page-link"
-                (click)="changePage(pageNumber() - 1)">
+                (click)="pageChange(pageNumber() - 1)">
 
                 Previous
 
@@ -28,7 +28,7 @@
 
                 <button
                     class="page-link"
-                    (click)="changePage(page)">
+                    (click)="pageChange(pageNumber() + 1)">
 
                     {{page}}
 
@@ -46,7 +46,7 @@
 
             <button
                 class="page-link"
-                (click)="changePage(pageNumber() + 1)">
+                (click)="pageChange(pageNumber() + 1)">
 
                 Next
 

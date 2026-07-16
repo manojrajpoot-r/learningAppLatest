@@ -11,23 +11,26 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UpdateUserRequest } from '../../../core/models/user/UpdateUserRequest.model';
 import { RolesService } from '../../../core/services/roles/roles.service';
 import { AssignUserRoleService } from '../../../core/services/assign-user-role/assign-user-role.service';
-import { Pagination } from '../../../shared/components/pagination/pagination';
-import { ToastService } from '../../../core/services/toast/toast.service';
-import { ConfirmService } from '../../../core/services/confirm/confirm.service';
+import { ToastService } from '../../../shared/services/toast/toast.service';
+import { ConfirmService } from '../../../shared/services/confirm/confirm.service';
+import { Table, TableColumn, TableAction } from '../../../shared/components/table/table';
+import { DatePipe } from '@angular/common';
+import { ExportService } from '../../../shared/export/export.service';
 @Component({
   selector: 'app-users',
-  imports: [ReactiveFormsModule, Pagination],
+  imports: [ReactiveFormsModule, Table, DatePipe],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
 export class Users {
 
   private userService = inject(UserService);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
   private roleService = inject(RolesService);
   private assignUserRoleService = inject(AssignUserRoleService);
   private toast = inject(ToastService);
   private confirm = inject(ConfirmService)
+  private exportService = inject(ExportService);
   visible = signal(false);
   isEditMode = signal(false);
   selectedEditId = signal<number | null>(null);
@@ -36,15 +39,136 @@ export class Users {
   selectedUserId = signal<number | null>(null);
   selectedRoles = signal<number[]>([]);
 
+  columns: TableColumn<User>[] = [
+    {
+      field: 'fullName',
+      header: 'Name',
+      sortable: true
+    },
+    {
+      field: 'email',
+      header: 'Email',
+      sortable: true
+    },
+    {
+      field: 'isActive',
+      header: 'Status',
+      sortable: true,
+      type: 'tag',
+      tag: {
+        activeText: 'Active',
+        inactiveText: 'Inactive',
+        activeClass: 'bg-success',
+        inactiveClass: 'bg-danger'
+      }
+    }
+  ];
 
-  //tosignal
-  //users = toSignal(this.userService.getUsers());
-  //resource
+  actions: TableAction<User>[] = [
+
+    {
+      action: 'edit',
+      label: 'Edit',
+      icon: 'bi bi-pencil',
+      severity: 'info'
+    },
+
+    {
+      action: 'delete',
+      label: 'Delete',
+      icon: 'bi bi-trash',
+      severity: 'danger'
+    },
+
+    {
+      action: 'toggleStatus',
+
+      label: (row) => row.isActive ? 'Disable' : 'Enable',
+
+      icon: (row) => row.isActive
+        ? 'bi bi-lock-fill'
+        : 'bi bi-unlock-fill',
+
+      severity: (row) => row.isActive
+        ? 'warning'
+        : 'success'
+    },
+
+    {
+      action: 'assignRole',
+      label: 'Roles',
+      icon: 'bi bi-people-fill',
+      severity: 'primary'
+    }
+
+  ];
+
+
+
+  handleAction(event: any) {
+    switch (event.action) {
+      case 'edit':
+        this.openEditModal(event.row.id);
+        break;
+
+      case 'delete':
+        this.handleDelete(event.row.id);
+        break;
+      case 'toggleStatus':
+        this.toggleStatus(event.row);
+        break;
+      case 'assignRole':
+        this.openAssignRoleModal(event.row.id);
+        break;
+    }
+  }
+
   request = signal<PaginationRequest>({
     pageNumber: 1,
     pageSize: 10,
-    search: ''
+    search: '',
+    sortBy: '',
+    sortOrder: 'asc'
   });
+  pageChange(page: number) {
+    this.request.update(req => ({
+      ...req,
+      pageNumber: page
+    }));
+
+    this.users.reload();
+  }
+  handleSort(event: {
+    field: string;
+    order: 'asc' | 'desc';
+  }) {
+
+    this.request.update(req => ({
+      ...req,
+      sortBy: event.field,
+      sortOrder: event.order,
+      pageNumber: 1
+    }));
+
+    this.users.reload();
+
+  }
+
+
+  exportUsers() {
+    const exportData = this.users.value()?.data.map(x => ({
+      Name: x.fullName,
+      Email: x.email,
+      Status: x.isActive ? 'Active' : 'Inactive'
+    })) ?? [];
+
+    this.exportService.exportToExcel(
+      exportData,
+      'Users'
+    );
+
+  }
+
   users = resource({
     loader: async () => {
       return await firstValueFrom(
@@ -182,16 +306,28 @@ export class Users {
     });
   }
 
+  toggleStatus(user: User) {
+    this.userService.toggleStatus(user.id).subscribe({
+      next: (res) => {
+        this.toast.success("Status update successfully!");
+        this.users.reload();
+      },
+      error: () => {
+        this.toast.error("Something went wrong");
+      }
+    });
+
+  }
+
   //search
   constructor() {
     effect((onCleanup) => {
-
       const search_value = this.searchText();
       const timer = setTimeout(() => {
         this.request.update(req => ({
           ...req,
           search: search_value,
-          pagaNumber: 1
+          pageNumber: 1
         }));
         this.users.reload();
       }, 500);
@@ -239,12 +375,5 @@ export class Users {
 
   }
 
-  changePage(page: number) {
-    this.request.update(r => ({
-      ...r,
-      pageNumber: page
-    }));
-    this.users.reload();
 
-  }
 }

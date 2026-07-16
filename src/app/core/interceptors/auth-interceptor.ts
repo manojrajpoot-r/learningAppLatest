@@ -1,9 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
-import { ToastService } from '../services/toast/toast.service';
+import { ToastService } from '../../shared/services/toast/toast.service';
 import { Router } from '@angular/router';
-import { LoadingService } from '../services/loading/loading.service';
+import { LoadingService } from '../../shared/services/loading/loading.service';
 import { catchError, throwError, finalize } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
