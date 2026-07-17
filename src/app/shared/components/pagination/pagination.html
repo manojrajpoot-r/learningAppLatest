@@ -1,59 +1,38 @@
-<nav>
 
-    <ul class="pagination justify-content-center">
+<div class="pagination-container">
+    <div class="pagination-info">
+        Showing
+        <strong>{{ pageNumber() }}</strong>
+        -
+        <strong>{{ pageSize() }}</strong>
+        of
+        <strong>{{ totalRecords() }}</strong>
+        records
+    </div>
 
-        <!-- Previous -->
-
-        <li
-            class="page-item"
-            [class.disabled]="pageNumber() === 1">
-
-            <button
-                class="page-link"
-                (click)="pageChange(pageNumber() - 1)">
-
-                Previous
-
-            </button>
-
-        </li>
-
-        <!-- Page Numbers -->
-
+    <div class="pagination-actions">
+      <button
+          class="page-link"
+          [disabled]="pageNumber() === 1"
+          (click)="pageChange(pageNumber() - 1)">
+          <i class="bi bi-chevron-left"></i>
+          Previous
+      </button>
         @for(page of pages(); track page){
+          <button
+              class="page-link"
+              [class.active]="page === pageNumber()"
+              (click)="pageChange(page)">
+              {{ page }}
+          </button>
+      }
 
-            <li
-                class="page-item"
-                [class.active]="pageNumber() === page">
-
-                <button
-                    class="page-link"
-                    (click)="pageChange(pageNumber() + 1)">
-
-                    {{page}}
-
-                </button>
-
-            </li>
-
-        }
-
-        <!-- Next -->
-
-        <li
-            class="page-item"
-            [class.disabled]="pageNumber() === totalPages()">
-
-            <button
-                class="page-link"
-                (click)="pageChange(pageNumber() + 1)">
-
-                Next
-
-            </button>
-
-        </li>
-
-    </ul>
-
-</nav>
+      <button
+          class="page-link"
+          [disabled]="pageNumber() === totalPages()"
+          (click)="pageChange(pageNumber() + 1)">
+          Next
+          <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+</div>

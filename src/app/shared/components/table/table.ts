@@ -1,7 +1,16 @@
 import { Component, input, output } from '@angular/core';
 import { User } from '../../../core/models/user/user.model';
 import { Pagination } from '../../../shared/components/pagination/pagination';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCard } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 export interface TableColumn<T> {
   field: keyof T;
   header: string;
@@ -47,7 +56,7 @@ export interface TableAction<T> {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [Pagination],
+  imports: [Pagination, MatCard, MatFormFieldModule, MatIcon],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })

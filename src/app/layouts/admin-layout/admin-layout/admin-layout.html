@@ -1,0 +1,25 @@
+<app-header></app-header>
+
+<mat-sidenav-container class="layout">
+
+    <mat-sidenav
+
+        mode="side"
+
+        [opened]="layoutService.sidebarOpen()">
+
+        <app-sidebar/>
+
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+
+        <main>
+
+            <router-outlet/>
+
+        </main>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

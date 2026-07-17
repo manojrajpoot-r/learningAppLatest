@@ -16,9 +16,12 @@ import { ConfirmService } from '../../../shared/services/confirm/confirm.service
 import { Table, TableColumn, TableAction } from '../../../shared/components/table/table';
 import { DatePipe } from '@angular/common';
 import { ExportService } from '../../../shared/export/export.service';
+import { MatCard } from '@angular/material/card';
+import { MatCardHeader } from '@angular/material/card';
+import { MatCardTitle } from '@angular/material/card';
 @Component({
   selector: 'app-users',
-  imports: [ReactiveFormsModule, Table, DatePipe],
+  imports: [ReactiveFormsModule, Table, DatePipe, MatCard, MatCardHeader, MatCardTitle],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })

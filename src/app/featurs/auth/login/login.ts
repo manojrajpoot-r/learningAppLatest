@@ -38,7 +38,7 @@ export class Login {
         // localStorage.setItem('currentUser', JSON.stringify(res.data.user))
         //signal
         this.authService.setLogin(res);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin/dashboard']);
       },
       error: (error) => {
         const message = error.error?.message || 'Something went wrong';

@@ -1,11 +1,292 @@
-.table{
-  margin-top: 20px;
-}
-.table th{
-  background: #f8f9fa;
-  font-weight: 600;
+:host {
+    display: block;
 }
 
-.table td{
-  vertical-align: middle;
+/* ===========================
+   Toolbar
+=========================== */
+
+.d-flex {
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, .06);
+}
+
+.w-25 {
+    width: 320px !important;
+}
+
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+/* ===========================
+   Card
+=========================== */
+
+mat-card {
+    border-radius: 18px !important;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, .08);
+}
+
+/* ===========================
+   Table
+=========================== */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+    background: white;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 18px;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+th:hover {
+    background: #eef2ff;
+}
+
+td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: .25s;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+    transform: scale(1.002);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ===========================
+   Status Badge
+=========================== */
+
+.badge {
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bg-success {
+    background: #DCFCE7 !important;
+    color: #15803D !important;
+}
+
+.bg-danger {
+    background: #FEE2E2 !important;
+    color: #B91C1C !important;
+}
+
+/* ===========================
+   Action Buttons
+=========================== */
+
+td:last-child {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-sm {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .25s;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+}
+
+/* ===========================
+   Empty State
+=========================== */
+
+.text-center {
+    padding: 50px;
+    color: #94A3B8;
+    font-weight: 600;
+}
+
+/* ===========================
+   Scrollbar
+=========================== */
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1000px;
+    background: #fff;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+    background: #f8fafc;
+    color: #475569;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tbody td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: all .25s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+.action-btn {
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 10px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+
+    margin-right: 8px;
+
+    font-size: 15px;
+
+}
+.btn-primary {
+
+    background: #EEF2FF;
+    color: #4F46E5;
+
+}
+
+.btn-primary:hover {
+
+    background: #4F46E5;
+    color: white;
+
+}
+
+.search-box{
+    width:100%;
+}
+
+.right{
+      margin-left: 1290px;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:768px){
+
+    .d-flex{
+        flex-direction:column;
+        align-items:stretch !important;
+    }
+
+    .w-25{
+        width:100% !important;
+    }
+
+}
+
+@media (max-width:768px){
+
+.toolbar{
+    flex-direction:column;
+    align-items:stretch;
+}
+
+.search-box{
+    width:100%;
+}
+
+.right{
+    justify-content:flex-end;
+}
+
 }

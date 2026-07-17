@@ -1,6 +1,11 @@
 
-<div class="container mt-10">
-    <div class="row col-md-12">
+    <mat-card-header>
+        <mat-card-title>
+            Users
+        </mat-card-title>
+    </mat-card-header>
+
+
         <app-table
             [data]="users.value()?.data ?? []"
             [columns]="columns"
@@ -16,7 +21,7 @@
             (actionClick)="handleAction($event)">
         </app-table>
 
-        </div>
+
 
 
 
@@ -219,4 +224,4 @@
 
   }
 
-</div>
+

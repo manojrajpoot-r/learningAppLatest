@@ -1,0 +1,17 @@
+.layout{
+
+    height:100vh;
+
+    margin-top:64px;
+
+}
+
+.content{
+
+    padding:24px;
+
+    background:#f5f7fb;
+
+    min-height:calc(100vh - 64px);
+
+}

@@ -26,7 +26,5 @@ export class Dashboard {
 
   }
 
-  logout() {
-    this.authService.logout();
-  }
+
 }

@@ -1,0 +1,61 @@
+<mat-toolbar color="primary" class="header">
+    <!-- Menu -->
+   <button
+    mat-icon-button
+    (click)="layoutService.toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+</button>
+
+    <!-- Logo -->
+    <span class="logo">
+        Admin Panel
+    </span>
+    <span class="spacer"></span>
+
+    <!-- Search -->
+    <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+    </button>
+
+    <!-- Notification -->
+    <button mat-icon-button>
+        <mat-icon>
+            notifications
+        </mat-icon>
+    </button>
+
+    <!-- Profile -->
+
+    <button
+        mat-icon-button
+        [matMenuTriggerFor]="profileMenu">
+        <mat-icon>
+            account_circle
+        </mat-icon>
+    </button>
+
+</mat-toolbar>
+
+<mat-menu #profileMenu="matMenu">
+    <button mat-menu-item>
+        <mat-icon>
+            person
+        </mat-icon>
+        Profile
+    </button>
+
+    <button mat-menu-item>
+        <mat-icon>
+            settings
+        </mat-icon>
+        Settings
+    </button>
+
+ <button mat-menu-item (click)="logout()">
+    <mat-icon>
+        logout
+    </mat-icon>
+    <span>Logout</span>
+</button>
+
+</mat-menu>

@@ -3,7 +3,7 @@ import { Service, inject } from '@angular/core';
 import { LoginRequest } from '../../models/login-request/login-request';
 import { environment } from '../../../environments/environment';
 import { LoginRespone } from '../../models/login-response/login-response';
-import { BaseApiService } from '../base-api/base-api.service';
+import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
 import { Router } from '@angular/router';
 import { signal, computed } from '@angular/core';
 import { CurrentUser } from '../../models/current-user/current-user';

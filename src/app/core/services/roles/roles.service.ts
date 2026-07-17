@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { BaseApiService } from '../base-api/base-api.service';
+import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
 import { ApiResponse } from '../../models/api-response/ApiResponse.model';
 import { Role } from '../../models/role/role.model';
 import { PaginationRequest } from '../../models/pagination-request/pagination-request';
