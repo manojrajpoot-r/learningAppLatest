@@ -7,10 +7,12 @@ import { BaseApiService } from '../../../shared/services/base-api/base-api.servi
 import { Router } from '@angular/router';
 import { signal, computed } from '@angular/core';
 import { CurrentUser } from '../../models/current-user/current-user';
+import { PermissionService } from '../permission/permission.service';
 @Service()
 export class AuthService extends BaseApiService {
 
   private router = inject(Router);
+  private permissionService = inject(PermissionService)
   //signal
   token = signal<string | null>(localStorage.getItem('accessToken'));
   // getToken() {
@@ -40,16 +42,19 @@ export class AuthService extends BaseApiService {
     return this.http.post<LoginRespone>(`${this.apiUrl}/Auth/login`, request)
   }
 
+
   setLogin(res: LoginRespone) {
     this.token.set(res.data.accessToken);
     this.currentUser.set(res.data.user);
     localStorage.setItem('accessToken', res.data.accessToken);
     localStorage.setItem('currentUser', JSON.stringify(res.data.user));
+    this.permissionService.setPermissions(res.data.permissions)
+
   }
 
-  hasPermission(permission: string) {
-    return this.currentUser()?.permissions.includes(permission) ?? false;
-  }
+  // hasPermission(permission: string) {
+  //   return this.currentUser()?.permissions.includes(permission) ?? false;
+  // }
 
   // hasPermission(permission: string): boolean {
   //   const user = this.getCurrentUser();
@@ -59,10 +64,11 @@ export class AuthService extends BaseApiService {
   //   }
   //   return user.permissions.includes(permission);
   // }
+
+
   logout() {
     this.token.set(null);
     this.currentUser.set(null);
-    localStorage.clear();
     this.router.navigate(['/login']);
   }
 

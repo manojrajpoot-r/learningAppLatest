@@ -1,60 +1,43 @@
-<mat-nav-list>
+<ul>
+    @for(item of menuItems; track item.label){
+      <li>
+          @if(item.children?.length){
+            <button (click)="toggleMenu(item.label)">
+                {{item.label}}
+                <span>
+                @if(expandedMenu() === item.label){
+                ▼
+                }
+                @else{
+                ▶
+                }
+                </span>
+             </button>
 
-    <a
-        mat-list-item
-        routerLink="/admin/dashboard"
-        routerLinkActive="active">
+              @if(expandedMenu() === item.label){
+              <ul [@expandCollapse]="'open'">
 
-        <mat-icon matListItemIcon>
 
-            dashboard
+                  @for(child of item.children; track child.label){
+                  <li>
+                  <a
+                   [routerLink]="child.route"
+                   [routerLinkActive]="active"
+                  [routerLinkActiveOptions]="{exact:true}"
+                  >
+                  {{child.label}}
+                  </a>
+                  </li>
+                  }
+                </ul>
+              }
+           }
 
-        </mat-icon>
-
-        <span>
-
-            Dashboard
-
-        </span>
-
-    </a>
-
-    <a
-        mat-list-item
-        routerLink="/admin/users"
-        routerLinkActive="active">
-
-        <mat-icon matListItemIcon>
-
-            people
-
-        </mat-icon>
-
-        <span>
-
-            Users
-
-        </span>
-
-    </a>
-
-    <a
-        mat-list-item
-        routerLink="/admin/roles"
-        routerLinkActive="active">
-
-        <mat-icon matListItemIcon>
-
-            admin_panel_settings
-
-        </mat-icon>
-
-        <span>
-
-            Roles
-
-        </span>
-
-    </a>
-
-</mat-nav-list>
+          @else{
+            <a [routerLink]="item.route">
+               {{item.label}}
+            </a>
+            }
+            </li>
+    }
+</ul>

@@ -1,19 +1,18 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
 import { inject } from '@angular/core';
-export const authGuard: CanActivateFn = (route, state) => {
+import { PermissionService } from '../services/permission/permission.service';
+export const permissionGuard: CanActivateFn = (route) => {
 
-  const authService = inject(AuthService);
+  const permissionService = inject(PermissionService);
   const router = inject(Router);
-  //  const isLogIn = authService.getToken();
-  // if (isLogIn) {
-  //   return true;
-  // }
-  //signal
-  if (authService.isLoggedIn()) {
+
+  const permission = route.data['permission'] as string;
+
+  if (permissionService.has(permission)) {
     return true;
   }
 
-  return router.createUrlTree(['/login']);
+  return router.createUrlTree(['/admin/dashboard']);
 
 };

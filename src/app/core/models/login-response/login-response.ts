@@ -11,5 +11,7 @@ export interface LoginData {
   refreshToken: string;
   expiresAt: string;
   user: CurrentUser;
+  permissions: string[];
+
 }
 

@@ -56,3 +56,10 @@
 .text {
     font-size:15px;
 }
+
+.active{
+ background:#6aeb25;
+ color:white;
+ border-radius:8px;
+
+}

@@ -12,32 +12,32 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const loading = inject(LoadingService);
   const toast = inject(ToastService);
   const router = inject(Router);
-  loading.show();
-  const token = auth.token();
-  const tenant = 'ecom.saas.com';
 
-  const request = token
-    ? req.clone({
+  // Skip Login API
+  if (req.url.includes('/Auth/login')) {
+    return next(req);
+  }
+
+  loading.show();
+
+  const token = auth.token();
+  const tenant = window.location.hostname;
+
+  let request = req;
+  if (token) {
+    request = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
         'X-Tenant-Domain': tenant
       }
-    })
-    : req;
+    });
+  }
 
   return next(request).pipe(
     catchError(error => {
-      switch (error.status) {
-        case 401:
-          toast.error('Session Expired');
-          router.navigate(['/login']);
-          break;
-        case 403:
-          toast.warning('Access Denied');
-          break;
-        case 500:
-          toast.error('Server Error');
-          break;
+      if (error.status === 401) {
+        auth.logout();
+        toast.error('Session Expired');
       }
       return throwError(() => error);
     }),
@@ -45,7 +45,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     finalize(() => {
       loading.hide();
     })
-
   );
 
 };
