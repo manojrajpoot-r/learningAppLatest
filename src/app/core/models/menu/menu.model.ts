@@ -4,4 +4,6 @@ export interface MenuItem {
   route?: string;
   permission?: string;
   children?: MenuItem[];
+  active?: boolean;
+
 }

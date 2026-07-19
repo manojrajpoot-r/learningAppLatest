@@ -31,7 +31,6 @@ export const routes: Routes = [
         children: [
 
           {
-
             path: 'dashboard',
             component: Dashboard
           },

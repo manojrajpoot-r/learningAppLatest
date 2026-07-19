@@ -6,4 +6,5 @@ export interface User {
   email: string;
   tenantId: number;
   isActive: boolean;
+ 
 }

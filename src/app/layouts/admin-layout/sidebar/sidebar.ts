@@ -51,6 +51,7 @@ export class Sidebar {
   private router = inject(Router);
   expandedMenu = signal<string | null>(null);
   isCollapsed = signal(false);
+  
   menuItems: MenuItem[] = [
     {
       label: 'Dashboard',

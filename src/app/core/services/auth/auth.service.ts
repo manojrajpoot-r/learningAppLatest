@@ -13,58 +13,29 @@ export class AuthService extends BaseApiService {
 
   private router = inject(Router);
   private permissionService = inject(PermissionService)
-  //signal
+
   token = signal<string | null>(localStorage.getItem('accessToken'));
-  // getToken() {
-  //   return localStorage.getItem('accessToken');
-  // }
 
   currentUser = signal<CurrentUser | null>(
     localStorage.getItem('currentUser')
       ? JSON.parse(localStorage.getItem('currentUser')!)
       : null
   );
-  //  getCurrentUser() {
-  //     const user = localStorage.getItem('currentUser');
-  //     return user ? JSON.parse(user) : null;
-  //   }
 
-  //computed signal
+
   isLoggedIn = computed(() => !!this.token())
-
-  // isLoggedIn() {
-  //   return !!localStorage.getItem('accessToken');
-  // }
-
-
 
   login(request: LoginRequest) {
     return this.http.post<LoginRespone>(`${this.apiUrl}/Auth/login`, request)
   }
-
 
   setLogin(res: LoginRespone) {
     this.token.set(res.data.accessToken);
     this.currentUser.set(res.data.user);
     localStorage.setItem('accessToken', res.data.accessToken);
     localStorage.setItem('currentUser', JSON.stringify(res.data.user));
-    this.permissionService.setPermissions(res.data.permissions)
-
+    this.permissionService.setPermissions(res.data.user.permissions);
   }
-
-  // hasPermission(permission: string) {
-  //   return this.currentUser()?.permissions.includes(permission) ?? false;
-  // }
-
-  // hasPermission(permission: string): boolean {
-  //   const user = this.getCurrentUser();
-
-  //   if (!user) {
-  //     return false;
-  //   }
-  //   return user.permissions.includes(permission);
-  // }
-
 
   logout() {
     this.token.set(null);
@@ -72,10 +43,5 @@ export class AuthService extends BaseApiService {
     this.router.navigate(['/login']);
   }
 
-  // logout() {
-  //   localStorage.removeItem('accessToken');
-  //   localStorage.removeItem('currentUser');
-  //   localStorage.clear();
-  //   this.router.navigate(['/login']);
-  // }
+
 }

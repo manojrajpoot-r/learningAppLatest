@@ -1,18 +1,17 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
 import { inject } from '@angular/core';
-import { PermissionService } from '../services/permission/permission.service';
-export const permissionGuard: CanActivateFn = (route) => {
+import { AuthService } from '../services/auth/auth.service';
 
-  const permissionService = inject(PermissionService);
+export const authGuard: CanActivateFn = (route, state) => {
+
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  const permission = route.data['permission'] as string;
-
-  if (permissionService.has(permission)) {
+  // Agar user logged in hai
+  if (authService.isLoggedIn()) {
     return true;
   }
 
-  return router.createUrlTree(['/admin/dashboard']);
-
+  // Login page par redirect
+  return router.createUrlTree(['/login']);
 };

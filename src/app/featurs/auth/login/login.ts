@@ -29,14 +29,11 @@ export class Login {
     const request: LoginRequest = {
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!,
-      isPlatformUser: false
+      
     };
     console.log(request);
     this.authService.login(request).subscribe({
       next: (res) => {
-        // localStorage.setItem('accessToken', res.data.accessToken);
-        // localStorage.setItem('currentUser', JSON.stringify(res.data.user))
-        //signal
         this.authService.setLogin(res);
         this.router.navigate(['/admin/dashboard']);
       },
