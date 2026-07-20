@@ -1,9 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Home } from './frontend/home/home';
 import { Toast } from './shared/components/toast/toast';
 import { ConfirmDialog } from './shared/components/confirm-dialog/confirm-dialog';
 import { Loading } from './shared/components/loading/loading';
+import { IdleService } from './core/services/idle/idle.service';
+import { AuthService } from './core/services/auth/auth.service';
+import { StorageService } from './core/services/storage/storage.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Home, Toast, ConfirmDialog, Loading],
@@ -11,25 +14,15 @@ import { Loading } from './shared/components/loading/loading';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('learningAppLatest');
-
-
-  email_data = signal('manoj@gmail.com');
-
-  product_list = signal([
-    { id: 1, name: 'leptop', price: 30000 },
-    { id: 2, name: 'mobile', price: 20000 },
-  ]);
-
-
-
-  changeName() {
-    this.email_data.set('rajni@gmail.com');
+  private idle = inject(IdleService);
+  private auth = inject(AuthService);
+  private storage = inject(StorageService);
+  ngOnInit() {
+    if (this.auth.isLoggedIn()) {
+      this.idle.start();
+    }
   }
 
-  delete(id: number) {
 
-    alert(id);
 
-  }
 }

@@ -24,10 +24,11 @@
 
 
 
-
+    <div class="table-responsive">
       <table>
           <thead>
               <tr>
+                <th width="70">#</th>
                   @for(column of columns(); track column.field){
                       <th
 
@@ -56,6 +57,7 @@
               </tr>
           </thead>
           <tbody>
+
               @if(loading()){
                   <tr>
                       <td
@@ -76,8 +78,12 @@
                   </tr>
               }
               @else{
+
                   @for(row of data(); track row.id){
                       <tr>
+                          <td>
+                           {{ getSerialNumber($index) }}
+                           </td>
                           @for(column of columns(); track column.field){
                                 <td>
 
@@ -128,7 +134,7 @@
               }
           </tbody>
       </table>
-
+    </div>
 
 
 <app-pagination

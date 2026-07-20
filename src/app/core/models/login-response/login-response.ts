@@ -1,6 +1,6 @@
 import { CurrentUser } from "../current-user/current-user";
 
-export interface LoginRespone {
+export interface LoginResponse {
   success: boolean;
   message: string;
   data: LoginData;
@@ -11,7 +11,7 @@ export interface LoginData {
   refreshToken: string;
   expiresAt: string;
   user: CurrentUser;
+  roles: string[];
   permissions: string[];
 
 }
-

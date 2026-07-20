@@ -43,6 +43,7 @@ export class Users {
   selectedRoles = signal<number[]>([]);
 
   columns: TableColumn<User>[] = [
+
     {
       field: 'fullName',
       header: 'Name',

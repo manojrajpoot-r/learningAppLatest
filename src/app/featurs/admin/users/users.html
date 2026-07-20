@@ -7,6 +7,9 @@
 
 
         <app-table
+           title="Users"
+            addButtonText="Add User"
+            searchPlaceholder="Search User"
             [data]="users.value()?.data ?? []"
             [columns]="columns"
             [actions]="actions"

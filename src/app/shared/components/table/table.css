@@ -290,3 +290,19 @@ tbody tr:last-child td {
 }
 
 }
+
+
+tbody tr{
+    transition:.2s;
+}
+
+tbody tr:hover{
+    background:#f8f9fa;
+    transform:scale(1.003);
+}
+
+thead{
+    position:sticky;
+    top:0;
+    z-index:10;
+}

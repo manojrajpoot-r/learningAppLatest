@@ -1,14 +1,10 @@
 import { Service } from '@angular/core';
 import { Injectable, signal } from '@angular/core';
 
-
 @Service()
 
-
 export class PermissionService {
-
   private permissions = signal<Set<string>>(this.loadPermissions());
-
   private loadPermissions(): Set<string> {
     const stored = localStorage.getItem('permissions');
 

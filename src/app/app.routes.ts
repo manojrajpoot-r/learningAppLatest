@@ -5,6 +5,7 @@ import { Users } from './featurs/admin/users/users';
 import { AdminLayout } from './layouts/admin-layout/admin-layout/admin-layout';
 import { authGuard } from './core/guards/auth-guard';
 import { permissionGuard } from './core/guards/permission-guard';
+import { dashboardResolver } from './core/resolvers/dashboard-resolver';
 
 export const routes: Routes = [
 
@@ -32,7 +33,10 @@ export const routes: Routes = [
 
           {
             path: 'dashboard',
-            component: Dashboard
+            component: Dashboard,
+            resolve: {
+              dashboard: dashboardResolver
+            }
           },
 
 

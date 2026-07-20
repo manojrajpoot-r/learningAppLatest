@@ -17,9 +17,21 @@ export interface TableColumn<T> {
   sortable?: boolean;
   searchable?: boolean;
   width?: string;
-  type?: 'text' | 'tag' | 'image' | 'date' | 'currency';
+  align?: 'left' | 'center' | 'right';
   hidden?: boolean;
 
+  type?:
+  | 'text'
+  | 'tag'
+  | 'image'
+  | 'avatar'
+  | 'date'
+  | 'currency'
+  | 'boolean'
+  | 'custom';
+
+  format?: (row: T) => any;
+  class?: string | ((row: T) => string);
   tag?: {
     activeText: string;
     inactiveText: string;
@@ -27,7 +39,6 @@ export interface TableColumn<T> {
     inactiveClass: string;
   };
 }
-
 export interface TableAction<T> {
   action: string;
   icon?: string | ((row: T) => string);
@@ -62,6 +73,21 @@ export interface TableAction<T> {
 })
 
 export class Table {
+  title = input('');
+  showSearch = input(true);
+  showExport = input(true);
+  showAdd = input(true);
+  showSerialNumber = input(true);
+  addButtonText = input('Add New');
+  searchPlaceholder = input('Search...');
+
+  totalLabel = input('Total');
+  showTotal = input(true);
+  showFilter = input(false);
+  filterClick = output<void>();
+
+
+
   data = input.required<any[]>();
   columns = input.required<TableColumn<any>[]>();
   actions = input.required<TableAction<any>[]>();
@@ -91,7 +117,9 @@ export class Table {
     order: 'asc' | 'desc';
   }>();
 
-
+  getSerialNumber(index: number): number {
+    return ((this.pageNumber() - 1) * this.pageSize()) + index + 1;
+  }
   onSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.search.emit(value);
