@@ -1,9 +1,20 @@
 
-    <mat-card-header>
-        <mat-card-title>
-            Users
-        </mat-card-title>
-    </mat-card-header>
+
+
+    <app-toolbar
+        addText="Add User"
+        searchPlaceholder="Search User"
+        (search)="searchText.set($event)"
+        (add)="openAddModal()"
+        (export)="exportUsers()"
+        [showFilter]="true"
+        (filter)="filterVisible.set(true)">
+    </app-toolbar>
+
+
+
+
+
 
 
         <app-table
@@ -16,7 +27,7 @@
             [pageNumber]="users.value()?.pageNumber ?? 1"
             [pageSize]="users.value()?.pageSize ?? 10"
             [totalRecords]="users.value()?.totalRecords ?? 0"
-           (pageChange)="pageChange($event)"
+            (pageChange)="pageChange($event)"
             (sortChange)="handleSort($event)"
             (search)="searchText.set($event)"
             (addClick)="openAddModal()"
@@ -25,16 +36,48 @@
         </app-table>
 
 
+        <app-filter-panel
+            [visible]="filterVisible()"
+            (close)="filterVisible.set(false)"
+            (apply)="applyFilter()"
+            (reset)="resetFilter()">
+            <!-- Filters -->
+            <label>Status</label>
+            <select class="form-select">
+                <option>All</option>
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+        </app-filter-panel>
 
-
-
+<app-modal
+    [closeOnEscape]="false"
+    [closeOnBackdrop]="false"
+    icon="bi bi-person-plus"
+    [visible]="visible()"
+    [title]="isEditMode() ? 'Edit User' : 'Add User'"
+    saveText="Save User"
+    cancelText="Cancel"
+    (close)="closeModal()"
+    (save)="handleSave()">
+        <app-dynamic-form
+            [fields]="fields"
+            [form]="handleForm">
+        </app-dynamic-form>
+ 
+        <!-- <app-file-upload
+            label="Product Images"
+            [multiple]="true"
+            (fileChange)="selectedFiles=$event">
+        </app-file-upload> -->
+</app-modal>
   <!-- Modal -->
-  @if (visible()) {
+  <!-- @if (visible()) {
 
   <div class="modal fade show d-block" tabindex="-1">
       <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
-              <!-- Header -->
+            
               <div class="modal-header">
                   <h5 class="modal-title">
 
@@ -48,7 +91,7 @@
                   </button>
               </div>
 
-              <!-- Body -->
+            
               <div class="modal-body">
 
                   <form [formGroup]="handleForm">
@@ -123,7 +166,7 @@
 
               </div>
 
-              <!-- Footer -->
+  
               <div class="modal-footer">
 
                   <button
@@ -151,13 +194,13 @@
   </div>
 
   <div class="modal-backdrop fade show"></div>
-  }
+  } -->
 
 
 
 
   <!-- Modal assign Role -->
-  @if(showRoleModal()){
+  <!-- @if(showRoleModal()){
 
   <div class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
 
@@ -225,6 +268,6 @@
 
   </div>
 
-  }
+  } -->
 
 

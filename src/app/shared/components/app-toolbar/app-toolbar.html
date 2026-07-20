@@ -1,0 +1,49 @@
+<div class="toolbar">
+    <div class="toolbar-left">
+        @if(showSearch()){
+            <input
+                type="text"
+                class="form-control"
+                [placeholder]="searchPlaceholder()"
+                (input)="onSearch($event)">
+        }
+    </div>
+
+    <div class="toolbar-right">
+        @if(showFilter()){
+            <button
+                class="btn btn-outline-secondary"
+                (click)="filter.emit()">
+                <i class="bi bi-funnel"></i>
+                Filter
+            </button>
+        }
+
+        @if(showRefresh()){
+            <button
+                class="btn btn-outline-dark"
+                (click)="refresh.emit()">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        }
+
+        @if(showExport()){
+            <button
+                class="btn btn-success"
+                (click)="export.emit()">
+                <i class="bi bi-download"></i>
+                {{exportText()}}
+            </button>
+        }
+
+        @if(showAdd()){
+            <button
+                class="btn btn-primary"
+                (click)="add.emit()">
+                <i class="bi bi-plus-circle"></i>
+                {{addText()}}
+            </button>
+        }
+
+    </div>
+</div>

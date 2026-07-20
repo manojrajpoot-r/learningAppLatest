@@ -1,0 +1,23 @@
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.toolbar-left{
+    flex:1;
+    min-width:250px;
+}
+
+.toolbar-right{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.toolbar input{
+    width:100%;
+}

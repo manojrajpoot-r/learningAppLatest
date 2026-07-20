@@ -117,15 +117,24 @@
                           <td>
                               @for(action of actions(); track action.action){
                                   @if(action.visible ? action.visible(row) : true){
-                                    <button
-                                        class="action-btn"
-                                        [class]="getButtonClass(getSeverity(action,row))"
-                                        [title]="getTooltip(action,row)"
-                                        (click)="handleAction(action.action,row)">
-
+                                <button
+                                    class="action-btn"
+                                    [class]="getButtonClass(getSeverity(action,row))"
+                                    [class.rounded-pill]="action.rounded"
+                                    [class]="getSize(action)"
+                                    [style.background]="getColor(action,row)"
+                                    [disabled]="isDisabled(action,row)"
+                                    [matTooltip]="getTooltip(action,row)"
+                                    (click)="handleAction(action.action,row)">
+                                    @if(isLoading(action,row)){
+                                        <span
+                                            class="spinner-border spinner-border-sm">
+                                        </span>
+                                    }@else{
                                         <i [class]="getIcon(action,row)"></i>
 
-                                    </button>
+                                    }
+                                </button>
                                   }
                               }
                           </td>

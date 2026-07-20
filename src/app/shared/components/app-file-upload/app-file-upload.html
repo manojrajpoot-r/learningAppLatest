@@ -1,0 +1,25 @@
+<div class="upload-box">
+    <label>
+        {{label()}}
+    </label>
+    <input
+        type="file"
+        [multiple]="multiple()"
+        [accept]="accept()"
+        (change)="onSelect($event)">
+</div>
+
+@if(preview().length){
+<div class="preview">
+    @for(image of preview();track image){
+        <div class="item">
+            <img [src]="image">
+            <button
+                class="btn btn-danger btn-sm"
+                (click)="remove($index)">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    }
+</div>
+}

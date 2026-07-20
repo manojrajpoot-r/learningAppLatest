@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output ,inject, signal} from '@angular/core';
 import { User } from '../../../core/models/user/user.model';
 import { Pagination } from '../../../shared/components/pagination/pagination';
 import { MatTableModule } from '@angular/material/table';
@@ -11,6 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ConfirmService } from '../../services/confirm/confirm.service';
+
 export interface TableColumn<T> {
   field: keyof T;
   header: string;
@@ -43,25 +47,39 @@ export interface TableAction<T> {
   action: string;
   icon?: string | ((row: T) => string);
   label?: string | ((row: T) => string);
-
+  tooltip?: string | ((row: T) => string);
+  confirmTitle?: string;
+  confirmMessage?: string;
+  
   severity?:
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'danger'
-  | ((row: T) =>
-    'primary'
+    | 'primary'
     | 'secondary'
     | 'success'
     | 'info'
     | 'warning'
-    | 'danger');
+    | 'danger'
+    | ((row: T) =>
+        'primary'
+      | 'secondary'
+      | 'success'
+      | 'info'
+      | 'warning'
+      | 'danger');
 
-  tooltip?: string | ((row: T) => string);
+  color?: string | ((row: T) => string);
+  size?: 'sm' | 'md' | 'lg';
+  rounded?: boolean;
+  loading?: (row: T) => boolean;
+  confirm?: {
+      title?: string;
+      message?: string;
+      icon?: string;
+      confirmText?: string;
+      cancelText?: string;
+  }
   visible?: (row: T) => boolean;
   disabled?: (row: T) => boolean;
+
 }
 
 @Component({
@@ -73,6 +91,7 @@ export interface TableAction<T> {
 })
 
 export class Table {
+  private confirm = inject(ConfirmService);
   title = input('');
   showSearch = input(true);
   showExport = input(true);
@@ -80,24 +99,19 @@ export class Table {
   showSerialNumber = input(true);
   addButtonText = input('Add New');
   searchPlaceholder = input('Search...');
-
   totalLabel = input('Total');
   showTotal = input(true);
   showFilter = input(false);
   filterClick = output<void>();
-
-
-
   data = input.required<any[]>();
   columns = input.required<TableColumn<any>[]>();
   actions = input.required<TableAction<any>[]>();
-  loading = input(false);
+  loading=signal(false);
   pageNumber = input.required<number>();
   pageSize = input.required<number>();
   totalRecords = input.required<number>();
   pageChange = output<number>();
   search = output<string>();
-
   addClick = output<void>();
   exportClick = output<void>();
 
@@ -105,12 +119,14 @@ export class Table {
     action: string;
     row: User
   }>();
-
   selectionChange = output<any[]>();
-
-
   sortField = '';
   sortOrder: 'asc' | 'desc' = 'asc';
+
+size?: 'sm' | 'md' | 'lg';
+rounded?: boolean;
+
+
 
   sortChange = output<{
     field: string;
@@ -142,12 +158,36 @@ export class Table {
     }
   }
 
-  handleAction(action: string, row: any) {
-    this.actionClick.emit({
-      action,
-      row
+handleAction(action: TableAction<any>, row: any) {
+
+  if (action.confirm) {
+
+    this.confirm.open({
+
+      title: action.confirmTitle ?? 'Confirmation',
+
+      message: action.confirmMessage ?? 'Are you sure you want to continue?',
+
+      onConfirm: () => {
+
+        this.actionClick.emit({
+          action: action.action,
+          row
+        });
+
+      }
+
     });
+
+    return;
   }
+
+  this.actionClick.emit({
+    action: action.action,
+    row
+  });
+
+}
 
   getLabel(action: TableAction<any>, row: any): string {
     return typeof action.label === 'function'
@@ -167,11 +207,21 @@ export class Table {
       : (action.icon ?? '');
   }
 
-  getTooltip(action: TableAction<any>, row: any): string {
-    return typeof action.tooltip === 'function'
-      ? action.tooltip(row)
-      : (action.tooltip ?? '');
+getTooltip(action: TableAction<any>, row: any): string {
+
+  if (typeof action.tooltip === 'function') {
+    return action.tooltip(row);
   }
+
+  if (action.tooltip) {
+    return action.tooltip;
+  }
+
+  return action.label
+      ? this.getLabel(action, row)
+      : action.action;
+
+}
 
 
 
@@ -199,5 +249,39 @@ export class Table {
     });
 
   }
+
+  getColor(action: TableAction<any>, row: any) {
+  return typeof action.color === 'function'
+      ? action.color(row)
+      : action.color;
+
+}
+
+getSize(action: TableAction<any>) {
+  switch(action.size){
+    case 'sm':
+      return 'btn-sm';
+    case 'lg':
+      return 'btn-lg';
+    default:
+      return '';
+
+  }
+
+}
+
+isLoading(action: TableAction<any>, row:any){
+  return action.loading
+      ? action.loading(row)
+      : false;
+
+}
+
+isDisabled(action: TableAction<any>, row:any){
+  return action.disabled
+      ? action.disabled(row)
+      : false;
+
+}
 
 }

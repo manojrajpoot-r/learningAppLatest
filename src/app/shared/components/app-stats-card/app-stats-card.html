@@ -1,0 +1,31 @@
+<div class="stats-card">
+    @if(loading()){
+        <div class="placeholder"></div>
+    }
+
+    @else{
+        <div class="top">
+            <div>
+                <small>
+                    {{title()}}
+                </small>
+
+                <h2>
+                    {{value()}}
+                </h2>
+
+                <span>
+                    {{subtitle()}}
+                </span>
+
+            </div>
+
+            <div class="icon">
+                <i [class]="icon()"></i>
+            </div>
+
+        </div>
+
+    }
+
+</div>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject ,input} from '@angular/core';
 import { User } from '../../../core/models/user/user.model';
 import { UserService } from '../../../core/services/user/user.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -19,9 +19,21 @@ import { ExportService } from '../../../shared/export/export.service';
 import { MatCard } from '@angular/material/card';
 import { MatCardHeader } from '@angular/material/card';
 import { MatCardTitle } from '@angular/material/card';
+import { Modal } from '../../../shared/components/modal/modal';
+import { DynamicForm } from '../../../shared/components/dynamic-form/dynamic-form';
+import { AppPageHeader } from '../../../shared/components/app-page-header/app-page-header';
+import { DynamicField } from '../../../shared/components/dynamic-form/dynamic-form';
+import { AppToolbar } from '../../../shared/components/app-toolbar/app-toolbar';
+
 @Component({
   selector: 'app-users',
-  imports: [ReactiveFormsModule, Table, DatePipe, MatCard, MatCardHeader, MatCardTitle],
+  standalone:true,
+  imports: [
+     ReactiveFormsModule, 
+     Table, DatePipe, MatCard,
+     MatCardHeader, MatCardTitle,
+     Modal,DynamicForm,AppPageHeader,AppToolbar,
+    ],
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
@@ -41,7 +53,7 @@ export class Users {
   showRoleModal = signal(false);
   selectedUserId = signal<number | null>(null);
   selectedRoles = signal<number[]>([]);
-
+  filterVisible = signal(false);
   columns: TableColumn<User>[] = [
 
     {
@@ -68,63 +80,105 @@ export class Users {
     }
   ];
 
-  actions: TableAction<User>[] = [
 
-    {
-      action: 'edit',
-      label: 'Edit',
-      icon: 'bi bi-pencil',
-      severity: 'info'
-    },
-
-    {
-      action: 'delete',
-      label: 'Delete',
-      icon: 'bi bi-trash',
-      severity: 'danger'
-    },
-
-    {
-      action: 'toggleStatus',
-
-      label: (row) => row.isActive ? 'Disable' : 'Enable',
-
-      icon: (row) => row.isActive
-        ? 'bi bi-lock-fill'
-        : 'bi bi-unlock-fill',
-
-      severity: (row) => row.isActive
-        ? 'warning'
-        : 'success'
-    },
-
-    {
-      action: 'assignRole',
-      label: 'Roles',
-      icon: 'bi bi-people-fill',
-      severity: 'primary'
+actions: TableAction<User>[] = [
+{
+    action:'edit',
+    icon:'bi bi-pencil',
+    severity:'info',
+    tooltip:'Edit User',
+    rounded:true,
+    size:'sm'
+},
+{
+    action:'delete',
+    icon:'bi bi-trash',
+    severity:'danger',
+    confirm:{
+        title:'Delete User',
+        message:'Are you sure you want to delete this user?',
+        confirmText:'Delete',
+        cancelText:'Cancel'
     }
+},
 
-  ];
+{
+    action:'toggleStatus',
+
+    label:(row)=>row.isActive
+        ?'Disable'
+        :'Enable',
+
+    tooltip:(row)=>row.isActive
+        ?'Disable User'
+        :'Enable User',
+
+    icon:(row)=>row.isActive
+        ?'bi bi-lock-fill'
+        :'bi bi-unlock-fill',
+
+    severity:(row)=>row.isActive
+        ?'warning'
+        :'success',
+
+    rounded:true,
+
+    size:'sm'
+}
+
+];
 
 
 
-  handleAction(event: any) {
-    switch (event.action) {
-      case 'edit':
-        this.openEditModal(event.row.id);
-        break;
 
-      case 'delete':
-        this.handleDelete(event.row.id);
-        break;
-      case 'toggleStatus':
-        this.toggleStatus(event.row);
-        break;
-      case 'assignRole':
-        this.openAssignRoleModal(event.row.id);
-        break;
-    }
+
+fields: DynamicField[] = [
+
+  {
+    type:'text',
+    name:'fullName',
+    label:'Full Name',
+    placeholder:'Enter full name',
+    col:6
+  },
+
+  {
+    type:'email',
+    name:'email',
+    label:'Email',
+    placeholder:'Enter email',
+    col:6
+  },
+
+  {
+    type:'password',
+    name:'password',
+    label:'Password',
+    placeholder:'Enter password',
+    col:12
+  }
+
+];
+
+  handleAction(event:any){
+      switch(event.action){
+          case 'edit':
+              this.openEditModal(event.row.id);
+              break;
+
+          case 'delete':
+              this.userService.deleteUser(event.row.id)
+              .subscribe({
+                  next:()=>{
+                      this.toast.success('Deleted');
+                      this.users.reload();
+                  }
+              });
+              break;
+          case 'toggleStatus':
+              this.toggleStatus(event.row);
+              break;
+      }
   }
 
   request = signal<PaginationRequest>({

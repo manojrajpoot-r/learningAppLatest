@@ -1,0 +1,38 @@
+@if(visible()){
+<div class="filter-backdrop"
+     (click)="close.emit()">
+</div>
+
+<div class="filter-panel">
+    <div class="header">
+        <h5>
+            {{title()}}
+        </h5>
+        <button
+            class="btn-close"
+            (click)="close.emit()">
+        </button>
+    </div>
+
+    <div class="body">
+        <ng-content>
+        </ng-content>
+    </div>
+
+    <div class="footer">
+        <button
+            class="btn btn-light"
+            (click)="reset.emit()">
+            Reset
+        </button>
+        <button
+            class="btn btn-primary"
+            (click)="apply.emit()">
+            Apply
+        </button>
+
+    </div>
+
+</div>
+
+}
