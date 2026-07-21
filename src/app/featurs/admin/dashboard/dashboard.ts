@@ -6,6 +6,7 @@ import { AppStatsCard } from '../../../shared/components/app-stats-card/app-stat
 
 @Component({
   selector: 'app-dashboard',
+  standalone:true,
   imports: [AppStatsCard],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

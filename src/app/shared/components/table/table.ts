@@ -14,7 +14,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ConfirmService } from '../../services/confirm/confirm.service';
-
 export interface TableColumn<T> {
   field: keyof T;
   header: string;
@@ -85,7 +84,7 @@ export interface TableAction<T> {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [Pagination, MatCard, MatFormFieldModule, MatIcon],
+  imports: [Pagination, MatCard, MatFormFieldModule, MatIcon,MatTooltip,MatTooltipModule],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })
@@ -126,7 +125,29 @@ export class Table {
 size?: 'sm' | 'md' | 'lg';
 rounded?: boolean;
 
+handleAction(action: TableAction<any>, row: any) {
 
+  if (action.confirm) {
+
+    this.confirm.open({
+      title: action.confirm.title ?? 'Confirm',
+      message: action.confirm.message ?? 'Are you sure?',
+      onConfirm: () => {
+        this.actionClick.emit({
+          action: action.action,
+          row
+        });
+      }
+    });
+
+    return;
+  }
+
+  this.actionClick.emit({
+    action: action.action,
+    row
+  });
+}
 
   sortChange = output<{
     field: string;
@@ -158,36 +179,6 @@ rounded?: boolean;
     }
   }
 
-handleAction(action: TableAction<any>, row: any) {
-
-  if (action.confirm) {
-
-    this.confirm.open({
-
-      title: action.confirmTitle ?? 'Confirmation',
-
-      message: action.confirmMessage ?? 'Are you sure you want to continue?',
-
-      onConfirm: () => {
-
-        this.actionClick.emit({
-          action: action.action,
-          row
-        });
-
-      }
-
-    });
-
-    return;
-  }
-
-  this.actionClick.emit({
-    action: action.action,
-    row
-  });
-
-}
 
   getLabel(action: TableAction<any>, row: any): string {
     return typeof action.label === 'function'

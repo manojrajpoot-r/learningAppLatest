@@ -24,7 +24,7 @@ import { DynamicForm } from '../../../shared/components/dynamic-form/dynamic-for
 import { AppPageHeader } from '../../../shared/components/app-page-header/app-page-header';
 import { DynamicField } from '../../../shared/components/dynamic-form/dynamic-form';
 import { AppToolbar } from '../../../shared/components/app-toolbar/app-toolbar';
-
+import { AppFilterPanel } from '../../../shared/components/app-filter-panel/app-filter-panel';
 @Component({
   selector: 'app-users',
   standalone:true,
@@ -32,7 +32,7 @@ import { AppToolbar } from '../../../shared/components/app-toolbar/app-toolbar';
      ReactiveFormsModule, 
      Table, DatePipe, MatCard,
      MatCardHeader, MatCardTitle,
-     Modal,DynamicForm,AppPageHeader,AppToolbar,
+     Modal,DynamicForm,AppPageHeader,AppToolbar,AppFilterPanel
     ],
   templateUrl: './users.html',
   styleUrl: './users.css',
@@ -54,6 +54,7 @@ export class Users {
   selectedUserId = signal<number | null>(null);
   selectedRoles = signal<number[]>([]);
   filterVisible = signal(false);
+
   columns: TableColumn<User>[] = [
 
     {
@@ -101,10 +102,8 @@ actions: TableAction<User>[] = [
         cancelText:'Cancel'
     }
 },
-
 {
     action:'toggleStatus',
-
     label:(row)=>row.isActive
         ?'Disable'
         :'Enable',
@@ -124,63 +123,64 @@ actions: TableAction<User>[] = [
     rounded:true,
 
     size:'sm'
+},
+{
+    action:'assignRole',
+    icon:'bi bi-lock',
+    severity:'info',
+    tooltip:'Assign Role',
+    rounded:true,
+    size:'sm'
+},
+
+];
+
+handleAction(event: { action: string; row: any }) {
+  switch (event.action) {
+    case 'edit':
+      this.openEditModal(event.row.id);
+      break;
+
+    case 'delete':
+      this.userService.deleteUser(event.row.id).subscribe({
+        next: () => {
+          this.toast.success('Deleted');
+          this.users.reload();
+        }
+      });
+      break;
+
+    case 'toggleStatus':
+      this.toggleStatus(event.row);
+      break;
+
+      case 'assignRole':
+      this.openAssignRoleModal(event.row);
+      break;
+  }
 }
 
-];
-
-
-
-
-
 fields: DynamicField[] = [
-
   {
-    type:'text',
-    name:'fullName',
-    label:'Full Name',
-    placeholder:'Enter full name',
-    col:6
+    type: 'text',
+    name: 'fullName',
+    label: 'Full Name',
+    col: 6
   },
-
   {
-    type:'email',
-    name:'email',
-    label:'Email',
-    placeholder:'Enter email',
-    col:6
+    type: 'email',
+    name: 'email',
+    label: 'Email',
+    col: 6
   },
-
   {
-    type:'password',
-    name:'password',
-    label:'Password',
-    placeholder:'Enter password',
-    col:12
+    type: 'password',
+    name: 'password',
+    label: 'Password',
+    col: 12,
+    hidden: false
   }
-
 ];
-
-  handleAction(event:any){
-      switch(event.action){
-          case 'edit':
-              this.openEditModal(event.row.id);
-              break;
-
-          case 'delete':
-              this.userService.deleteUser(event.row.id)
-              .subscribe({
-                  next:()=>{
-                      this.toast.success('Deleted');
-                      this.users.reload();
-                  }
-              });
-              break;
-          case 'toggleStatus':
-              this.toggleStatus(event.row);
-              break;
-      }
-  }
-
   request = signal<PaginationRequest>({
     pageNumber: 1,
     pageSize: 10,
@@ -211,8 +211,12 @@ fields: DynamicField[] = [
     this.users.reload();
 
   }
+resetFilter(){
 
+}
+applyFilter(){
 
+}
   exportUsers() {
     const exportData = this.users.value()?.data.map(x => ({
       Name: x.fullName,
@@ -261,6 +265,7 @@ fields: DynamicField[] = [
   })
 
   openAddModal() {
+    this.fields.find(x => x.name === 'password')!.hidden = false;
     this.visible.set(true);
     this.isEditMode.set(false);
     this.selectedEditId.set(null);
@@ -270,28 +275,23 @@ fields: DynamicField[] = [
     ]);
     this.handleForm.get('password')?.updateValueAndValidity();
   }
-  openEditModal(id: number) {
-
-    this.handleForm.get('password')?.clearValidators();
-    this.handleForm.get('password')?.updateValueAndValidity();
-
-    this.isEditMode.set(true);
-    this.selectedEditId.set(id);
-    this.userService.getUserById(id).subscribe({
-      next: (res) => {
-        this.handleForm.patchValue({
-          fullName: res.data.fullName,
-          email: res.data.email,
-        }),
-          this.visible.set(true);
-      }
-    })
-
-
-    this.handleForm.reset();
-    this.visible.set(true);
-  }
-
+openEditModal(id: number) {
+  this.fields.find(x => x.name === 'password')!.hidden = true;
+  this.handleForm.reset();
+  this.handleForm.get('password')?.clearValidators();
+  this.handleForm.get('password')?.updateValueAndValidity();
+  this.isEditMode.set(true);
+  this.selectedEditId.set(id);
+  this.userService.getUserById(id).subscribe({
+    next: (res) => {
+      this.handleForm.patchValue({
+        fullName: res.data.fullName,
+        email: res.data.email
+      });
+      this.visible.set(true);
+    }
+  });
+}
   closeModal() {
     this.visible.set(false);
   }

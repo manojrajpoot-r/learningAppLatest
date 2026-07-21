@@ -1,7 +1,7 @@
 import { Component, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-app-filter-panel',
+  selector: 'app-filter-panel',
   imports: [],
   templateUrl: './app-filter-panel.html',
   styleUrl: './app-filter-panel.css',

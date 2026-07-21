@@ -1,20 +1,121 @@
-<div class="mb-3">
-  <label>Full Name</label>
-  <input
-      class="form-control"
-      formControlName="fullName">
-</div>
+<form [formGroup]="form()">
 
-<div class="mb-3">
-  <label>Email</label>
-  <input
-      class="form-control"
-      formControlName="email">
-</div>
+  <div class="row">
 
-<div class="mb-3">
-  <label>Password</label>
-  <input
-      class="form-control"
-      formControlName="password">
-</div>
+    @for(field of fields(); track field.name){
+
+      @if(!field.hidden){
+
+        <div class="col-md-{{field.col ?? 12}}">
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              {{field.label}}
+            </label>
+
+            @switch(field.type){
+
+              @case('text'){
+
+                <input
+                  class="form-control"
+                  type="text"
+                  [formControlName]="field.name"
+                 [placeholder]="field.placeholder || ''">
+                @if(form().get(field.name)?.touched &&
+                  form().get(field.name)?.hasError('required')){
+
+                  <small class="text-danger">
+                    {{ field.label }} is required
+                  </small>
+
+                }
+              }
+          
+              @case('email'){
+
+                <input
+                  class="form-control"
+                  type="email"
+                  [formControlName]="field.name"
+                  [placeholder]="field.placeholder || ''">
+                  @if(form().get(field.name)?.hasError('email')){
+                          <small class="text-danger">
+                            Invalid email
+                          </small>
+                        }
+              }
+     
+              @case('password'){
+                <input
+                  class="form-control"
+                  type="password"
+                  [formControlName]="field.name"
+                  [placeholder]="field.placeholder || ''">
+                @if(form().get(field.name)?.hasError('minlength')){
+                  <small class="text-danger">
+                    Minimum length not met
+                  </small>
+
+                }
+              }
+        
+              @case('number'){
+
+                <input
+                  class="form-control"
+                  type="number"
+                  [formControlName]="field.name">
+
+              }
+
+              @case('date'){
+
+                <input
+                  class="form-control"
+                  type="date"
+                  [formControlName]="field.name">
+
+              }
+
+              @case('textarea'){
+
+                <textarea
+                  class="form-control"
+                  [formControlName]="field.name">
+                </textarea>
+
+              }
+
+              @case('select'){
+
+                <select
+                  class="form-select"
+                  [formControlName]="field.name">
+
+                  @for(option of field.options ?? []; track option.value){
+
+                    <option [value]="option.value">
+                      {{option.label}}
+                    </option>
+
+                  }
+
+                </select>
+
+              }
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+    }
+
+  </div>
+
+</form>

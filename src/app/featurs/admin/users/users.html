@@ -1,24 +1,15 @@
 
-
-
-    <app-toolbar
-        addText="Add User"
-        searchPlaceholder="Search User"
-        (search)="searchText.set($event)"
-        (add)="openAddModal()"
-        (export)="exportUsers()"
-        [showFilter]="true"
-        (filter)="filterVisible.set(true)">
-    </app-toolbar>
-
-
-
-
-
-
+        <app-toolbar
+            addText="Add User"
+            searchPlaceholder="Search User"
+            (search)="searchText.set($event)"
+            (add)="openAddModal()"
+            (export)="exportUsers()"
+            [showFilter]="true"
+            (filter)="filterVisible.set(true)">
+        </app-toolbar>
 
         <app-table
-           title="Users"
             addButtonText="Add User"
             searchPlaceholder="Search User"
             [data]="users.value()?.data ?? []"
@@ -29,12 +20,9 @@
             [totalRecords]="users.value()?.totalRecords ?? 0"
             (pageChange)="pageChange($event)"
             (sortChange)="handleSort($event)"
-            (search)="searchText.set($event)"
-            (addClick)="openAddModal()"
             (exportClick)="exportUsers()"
             (actionClick)="handleAction($event)">
         </app-table>
-
 
         <app-filter-panel
             [visible]="filterVisible()"
@@ -50,27 +38,53 @@
             </select>
         </app-filter-panel>
 
-<app-modal
-    [closeOnEscape]="false"
-    [closeOnBackdrop]="false"
-    icon="bi bi-person-plus"
-    [visible]="visible()"
-    [title]="isEditMode() ? 'Edit User' : 'Add User'"
-    saveText="Save User"
-    cancelText="Cancel"
-    (close)="closeModal()"
-    (save)="handleSave()">
-        <app-dynamic-form
-            [fields]="fields"
-            [form]="handleForm">
-        </app-dynamic-form>
- 
-        <!-- <app-file-upload
-            label="Product Images"
-            [multiple]="true"
-            (fileChange)="selectedFiles=$event">
-        </app-file-upload> -->
-</app-modal>
+        <app-modal
+            [closeOnEscape]="false"
+            [closeOnBackdrop]="false"
+            icon="bi bi-person-plus"
+            [visible]="visible()"
+            [title]="isEditMode() ? 'Edit User' : 'Add User'"
+            saveText="Save User"
+            cancelText="Cancel"
+            (close)="closeModal()"
+            (save)="handleSave()">
+                <app-dynamic-form
+                    [fields]="fields"
+                    [form]="handleForm">
+                </app-dynamic-form>
+        
+                <!-- <app-file-upload
+                    label="Product Images"
+                    [multiple]="true"
+                    (fileChange)="selectedFiles=$event">
+                </app-file-upload> -->
+        </app-modal>
+
+        <app-modal
+            [visible]="showRoleModal()"
+            title="Assign Roles"
+            (close)="showRoleModal.set(false)"
+            (save)="saveRoles()">
+
+            @for(role of roles.value()?.data; track role.id){
+               <div class="form-check">
+
+                          <input
+                              class="form-check-input"
+                              type="checkbox"
+                              [checked]="selectedRoles().includes(role.id)"
+                              (change)="toggleRole(role.id)">
+
+                          <label class="form-check-label">
+
+                              {{role.name}}
+
+                          </label>
+
+                      </div>
+            }
+
+        </app-modal>
   <!-- Modal -->
   <!-- @if (visible()) {
 

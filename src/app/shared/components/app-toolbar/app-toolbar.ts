@@ -2,7 +2,7 @@
   import { Component, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-app-toolbar',
+  selector: 'app-toolbar',
   imports: [],
   templateUrl: './app-toolbar.html',
   styleUrl: './app-toolbar.css',

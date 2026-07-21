@@ -1,26 +1,4 @@
 
-    <mat-card class="toolbar">
-        <div class="right">
-            <input
-                    matInput
-                    (input)="onSearch($event)"
-                    placeholder="Search...">
-        </div>
-        <div class="left">
-            <button
-                class="btn btn-success me-2"
-                (click)="exportClick.emit()">
-              <i class="bi bi-download"></i>
-              Export
-            </button>
-            <button
-                class="btn btn-primary"
-                (click)="addClick.emit()">
-              <i class="bi bi-plus-circle"></i>
-              Add New
-            </button>
-        </div>
-    </mat-card>
 
 
 
@@ -125,7 +103,7 @@
                                     [style.background]="getColor(action,row)"
                                     [disabled]="isDisabled(action,row)"
                                     [matTooltip]="getTooltip(action,row)"
-                                    (click)="handleAction(action.action,row)">
+                                   (click)="handleAction(action, row)">
                                     @if(isLoading(action,row)){
                                         <span
                                             class="spinner-border spinner-border-sm">

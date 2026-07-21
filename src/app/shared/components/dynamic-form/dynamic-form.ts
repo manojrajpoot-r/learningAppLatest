@@ -1,7 +1,8 @@
 import { Component, input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-export interface DynamicField {
+import { CommonModule } from '@angular/common';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+export interface DynamicField {
   type:
     | 'text'
     | 'email'
@@ -15,38 +16,29 @@ export interface DynamicField {
     | 'file';
 
   name: string;
-
   label: string;
-
   placeholder?: string;
-
-  options?: {
-    label: string;
-    value: any;
-  }[];
-
-  col?: number;          // Bootstrap Grid
-
+  options?: { label: string; value: any }[];
+  col?: number;
   readonly?: boolean;
-
   disabled?: boolean;
-
   hidden?: boolean;
-
   hint?: string;
-
   icon?: string;
-
   multiple?: boolean;
-
 }
+
 @Component({
   selector: 'app-dynamic-form',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './dynamic-form.html',
-  styleUrl: './dynamic-form.css',
+  styleUrl: './dynamic-form.css'
 })
 export class DynamicForm {
-   fields = input.required<any[]>();
-   form = input.required<FormGroup>();
+
+  fields = input.required<DynamicField[]>();
+
+  form = input.required<FormGroup>();
+
 }
